@@ -1,0 +1,18 @@
+{
+  "name": "gic",
+  "engine": {
+    "node": "^v16.14",
+    "npm": "^v8"
+  },
+  "version": "1.0.0",
+  "description": "GIC technical assessment",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
