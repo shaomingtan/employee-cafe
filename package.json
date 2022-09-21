@@ -8,7 +8,11 @@
   "description": "GIC technical assessment",
   "main": "index.js",
   "scripts": {
-    "serve": "node index.js"
+    "serve": "node index.js",
+    "migrate": "sequelize db:migrate",
+    "rollback": "sequelize db:migrate:undo",
+    "seed": "sequelize db:seed:all --debug",
+    "undo-seed": "sequelize db:seed:undo:all"
   },
   "author": "",
   "license": "ISC",
