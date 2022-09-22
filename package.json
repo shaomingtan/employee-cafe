@@ -8,11 +8,15 @@
   "description": "GIC technical assessment",
   "main": "index.js",
   "scripts": {
-    "serve": "node index.js",
+    "serve": "nodemon server.js",
     "migrate": "sequelize db:migrate",
     "rollback": "sequelize db:migrate:undo",
+    "rollback-all": "sequelize db:migrate:undo:all",
     "seed": "sequelize db:seed:all --debug",
-    "undo-seed": "sequelize db:seed:undo:all"
+    "undo-seed": "sequelize db:seed:undo:all",
+    "reseed": "sequelize db:seed:undo:all && sequelize db:seed:all --debug",
+    "pretest": "NODE_ENV=test npm run rollback-all && NODE_ENV=test npm run migrate",
+    "test": "NODE_ENV=test mocha test/**/*.js --timeout 100000"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +26,11 @@
     "sqlite3": "^5.1.1"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.4.1"
+    "chai": "^4.3.6",
+    "lodash": "^4.17.21",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.4.1",
+    "supertest": "^6.2.4"
   }
 }
