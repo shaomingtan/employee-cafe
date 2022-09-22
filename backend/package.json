@@ -1,5 +1,5 @@
 {
-  "name": "gic",
+  "name": "gic-backend",
   "engine": {
     "node": "^v16.14",
     "npm": "^v8"
@@ -26,10 +26,10 @@
     "sqlite3": "^5.1.1"
   },
   "devDependencies": {
+    "nodemon": "^2.0.20",
     "chai": "^4.3.6",
     "lodash": "^4.17.21",
     "mocha": "^10.0.0",
-    "nodemon": "^2.0.20",
     "sequelize-cli": "^6.4.1",
     "supertest": "^6.2.4"
   }
