@@ -82,7 +82,7 @@ const cafe = {
         })
         return res.send(cafes)
       }
-      // If location invalid return null
+      // If location invalid return empty array
       case VALIDATE_LOCATIONS_STATES.INVALID_LOCATION:
       default:{
         return res.send([])
@@ -90,13 +90,102 @@ const cafe = {
     }
   },
   createCafe: async (req,res) => {
-    return res.send([])
+    // Validate and create cafe
+    try {
+      const cafe = await db.Cafe.create({
+        name: req.body.name,
+        description: req.body.description,
+        logo: req.body.logo,
+        location: req.body.location
+      });
+      res.send(cafe)
+    } catch (e) {
+      res.status(400)
+      if (e.name === 'SequelizeValidationError') {
+        const errObj = {};
+        e.errors.map( err => {
+          errObj[err.path] = err.message;
+       })
+       return res.send(errObj)
+      }
+      console.log("createCafe error", e)
+      return res.send({error:"There was an error creating the cafe"})
+    }
   },
   updateCafe: async (req,res) => {
-    return res.send([])
+    // Find cafe
+    const cafeId = req.params.cafe_id
+    const cafe = await db.Cafe.findByPk(cafeId)
+
+    if (!cafe) {
+      res.status(400)
+      res.send({error:"Cafe ID not found"})
+      return
+    }
+
+    // Validate and update cafe
+    try {
+      // Set params
+      cafe.name = req.body.name ? req.body.name : employee.name
+      cafe.description = req.body.description ? req.body.description : cafe.description
+      cafe.logo = req.body.logo ? req.body.logo : cafe.logo
+      cafe.location = req.body.location ? req.body.location : cafe.location
+
+      const result = await cafe.save()
+      res.send(result)
+    } catch (e) {
+      res.status(400)
+      if (e.name === 'SequelizeValidationError') {
+        const errObj = {};
+        e.errors.map( err => {
+          errObj[err.path] = err.message;
+       })
+       return res.send(errObj)
+      }
+      console.log("updateCafe error", e)
+      return res.send({error:"There was an error updating the cafe"})
+    }
   },
   deleteCafe: async (req,res) => {
-    return res.send([])
+    // TODO, DRY up find cafe logic up and share with updateCafe
+    // Find cafe
+    const cafeId = req.params.cafe_id
+    const cafe = await db.Cafe.findByPk(cafeId)
+
+    if (!cafe) {
+      res.status(400)
+      res.send({error:"Cafe ID not found"})
+      return
+    }
+
+    // Find employees associated with cafe so that we can dissociate them.
+    const employeesToDissociate = []
+    const employeesWorkingInCafe = await db.Employee.findAll({where: {cafeId: cafeId}})
+    employeesWorkingInCafe.map(employee => {
+      employeesToDissociate.push({
+        ...employee.dataValues,
+        cafeId: null,
+        startDateAtCafe: null
+      })
+    })
+
+    // Destroy cafe and dissociate employees from cafe
+    try {
+      await db.sequelize.transaction(async (t) => {
+        // Note that bulkCreate can be used for bulk updating by setting the updateOnDuplicate option. I referenced this article: https://sebhastian.com/sequelize-bulk-update/
+        await db.Employee.bulkCreate(employeesToDissociate, { 
+          updateOnDuplicate: ["cafeId", "startDateAtCafe"],
+          transaction: t 
+        })
+        console.log("removed employee association with cafe")
+        await cafe.destroy({ transaction: t });
+      })
+      res.send("Successfully deleted cafe")
+    } catch (e) {
+      res.status(400)
+      console.log("deleteCafe error", e)
+      return res.send({error: "There was an error deleting the cafe"})
+    }
   }
 }
 
