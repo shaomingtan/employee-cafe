@@ -9,10 +9,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Employee.init({
-    name: DataTypes.STRING,
-    emailAddress: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    gender: DataTypes.ENUM(['male','female']),
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    emailAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.ENUM(['male','female']),
+      allowNull: false,
+    },
     cafeId: DataTypes.STRING,
     startDateAtCafe: DataTypes.DATE
   }, {

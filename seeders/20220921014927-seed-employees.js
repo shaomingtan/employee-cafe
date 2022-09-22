@@ -1,19 +1,10 @@
 'use strict';
 const db = require("../models")
-
-// Helper function to calculate date from number of days ago.
-const getDateXDaysAgo = (numOfDays) => {
-  const today = new Date()
-  const daysAgo = new Date(today.getTime());
-
-  daysAgo.setDate(today.getDate() - numOfDays);
-
-  return daysAgo;
-}
+const helper = require("../helper.js")
 
 const templateEmployee = (employeeIterator, cafeIterator, cafe) => {
   const phoneNumber =  `9${Math.round(Math.random()*10000000)}`
-  const startDateAtCafe = cafe ? getDateXDaysAgo(Math.round(Math.random()*365)) : null
+  const startDateAtCafe = cafe ? helper.getDateXDaysAgo(Math.round(Math.random()*365)) : null
 
   return {
     name: `Cafe${cafeIterator}: Sam Lim${employeeIterator}`,
