@@ -4,7 +4,7 @@ const db = require("../models")
 module.exports = {
   async up (queryInterface, Sequelize) {
     const cafes = []
-    const cafesToCreate = 1000
+    const cafesToCreate = 100
     for(let i=0; i<cafesToCreate;i++){
       const location = ((i) => {
         switch(i%4){

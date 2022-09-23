@@ -126,11 +126,11 @@ const cafe = {
     // Validate and update cafe
     try {
       // Set params
-      cafe.name = req.body.name ? req.body.name : employee.name
+      // TODO add tests to validate that 
+      cafe.name = req.body.name ? req.body.name : cafe.name
       cafe.description = req.body.description ? req.body.description : cafe.description
       cafe.logo = req.body.logo ? req.body.logo : cafe.logo
       cafe.location = req.body.location ? req.body.location : cafe.location
-
       const result = await cafe.save()
       res.send(result)
     } catch (e) {
