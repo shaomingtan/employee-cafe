@@ -13,6 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 
 import { createEmployee, updateEmployee, getCafes } from "../apis/dataApi"
+import store from "../ReduxStore";
 
 const NEW_EMPLOYEE = {
   name: '',
@@ -62,6 +63,7 @@ const EmployeeForm = (props) => {
         gender: employee.gender,
         cafeId: employee.cafeId,
       })
+      store.dispatch({ type: "showMessage", payload: "Employee Updated." });
     } else {
       await createEmployee({
         name: employee.name,
@@ -70,6 +72,7 @@ const EmployeeForm = (props) => {
         gender: employee.gender,
         cafeId: employee.cafeId,
       })
+      store.dispatch({ type: "showMessage", payload: "Employee Created." });
     }
   // TODO Display to user that employee has been updated
   }

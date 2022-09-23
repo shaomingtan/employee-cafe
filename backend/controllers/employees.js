@@ -12,7 +12,7 @@ const employee = {
           employees.emailAddress, 
           employees.phoneNumber, 
           employees.gender, 
-          employees.cafeId, 
+          IFNULL(employees.cafeId,'') as cafeId,
           IFNULL(cafes.name,'') as cafe,
           ROUND(
             JULIANDAY('now') - JULIANDAY(employees.startDateAtCafe)
@@ -43,6 +43,7 @@ const employee = {
         employees.phoneNumber, 
         employees.gender, 
         employees.cafeId, 
+        IFNULL(employees.cafeId,'') as cafeId,
         IFNULL(cafes.name,'') as cafe,
         ROUND(
           JULIANDAY('now') - JULIANDAY(employees.startDateAtCafe)

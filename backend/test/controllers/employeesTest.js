@@ -63,22 +63,32 @@ describe('Employee controller', async () => {
         // Get cafes
         const cafe1 = await db.Cafe.findOne({where: {name: CAFE_1_NAME}})
         const cafe2 = await db.Cafe.findOne({where: {name: CAFE_2_NAME}})
+
+        const employeeAtCafe1 = await db.Employee.findOne({where: {cafeId: cafe1.id}})
+        const employeeAtCafe2 = await db.Employee.findOne({where: {cafeId: cafe2.id}})
+        const employeeWithNoCafe = await db.Employee.findOne({where: {cafeId: null}})
         
         // Configure expected response
         const expectedResponse = [{
           ...testHelper.templateEmployee,
           daysWorked: 20,
-          cafe: cafe1.name
+          cafe: cafe1.name,
+          id: employeeAtCafe1.id,
+          cafeId: cafe1.id
         },
         {
           ...testHelper.templateEmployee,
           daysWorked: 10,
-          cafe: cafe2.name
+          cafe: cafe2.name,
+          id: employeeAtCafe2.id,
+          cafeId: cafe2.id
         },
         {
           ...testHelper.templateEmployee,
           daysWorked: 1,
-          cafe: ""
+          cafe: "",
+          id: employeeWithNoCafe.id,
+          cafeId: ""
         }]
         expect(response.body).to.eql(expectedResponse)
       })
@@ -88,6 +98,8 @@ describe('Employee controller', async () => {
         // Get cafe1
         const cafe1 = await db.Cafe.findOne({where: {name: CAFE_1_NAME}})
 
+        const employeeAtCafe1 = await db.Employee.findOne({where: {cafeId: cafe1.id}})
+
         // Get response
         const response = await request(app).get(`/employees?cafe=${cafe1.id}`)
         expect(response.status).to.eql(200)
@@ -96,7 +108,9 @@ describe('Employee controller', async () => {
         const expectedResponse = [{
           ...testHelper.templateEmployee,
           daysWorked: 20,
-          cafe: cafe1.name
+          cafe: cafe1.name,
+          cafeId: cafe1.id,
+          id: employeeAtCafe1.id
         }]
         expect(response.body).to.eql(expectedResponse)
       })

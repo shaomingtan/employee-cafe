@@ -9,6 +9,7 @@ import {
 import React, { useState, useEffect } from "react";
 
 import { createCafe, updateCafe } from "../apis/dataApi"
+import store from "../ReduxStore";
 
 const NEW_CAFE = {
   name: '',
@@ -37,14 +38,15 @@ const CafeForm = (props) => {
         description: cafe.description,
         location: cafe.location,
       })
+      store.dispatch({ type: "showMessage", payload: "Cafe Updated." });
     } else {
       await createCafe({
         name: cafe.name,
         description: cafe.description,
         location: cafe.location,
       })
+      store.dispatch({ type: "showMessage", payload: "Cafe Created." });
     }
-  // TODO Display to user that cafe has been updated
   }
 
   return (

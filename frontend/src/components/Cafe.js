@@ -12,6 +12,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { getCafes, deleteCafe } from "../apis/dataApi" 
 import EditDeleteBtnCellRenderer from './EditDeleteBtnCellRenderer';
 import DeletePopUp from './DeletePopUp';
+import store from "../ReduxStore";
 
 const Cafe = () => {
   const [rowData, setRowData] = useState([]);
@@ -80,7 +81,7 @@ const Cafe = () => {
       await deleteCafe(cafeToDelete.id)
       setOpenDialog(false)
       fetchCafesAndUpdateTable()
-      // TODO Display to user that cafe has been deleted
+      store.dispatch({ type: "showMessage", payload: "Cafe Deleted." });
     }
   }
 

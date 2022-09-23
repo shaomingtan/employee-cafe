@@ -12,20 +12,23 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { getEmployees, deleteEmployee } from "../apis/dataApi" 
 import EditDeleteBtnCellRenderer from './EditDeleteBtnCellRenderer';
 import DeletePopUp from './DeletePopUp';
+import store from "../ReduxStore";
 
 const Employee = () => {
   const [rowData, setRowData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
-  const [selectedCafe, setSelectedCafe] = useState(null);
+  const [selectedCafe, setSelectedCafe] = useState('');
 
   // Retrieve cafeId from url params
   const [searchParams, setSearchParams] = useSearchParams();
   const cafeId = searchParams.get('cafeId')
   // Update selected cafe
   useEffect(() => {
-    setSelectedCafe(cafeId)
-    fetchEmployeesAndUpdateTable()
+    if (cafeId) {
+      setSelectedCafe(cafeId)
+      fetchEmployeesAndUpdateTable()
+    }
   },[cafeId])
 
   // Setup table columns
@@ -80,7 +83,7 @@ const Employee = () => {
       await deleteEmployee(employeeToDelete.id)
       setOpenDialog(false)
       fetchEmployeesAndUpdateTable()
-      // TODO Display to user that employee has been deleted
+      store.dispatch({ type: "showMessage", payload: "Employee Deleted." });
     }
   }
 

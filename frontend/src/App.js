@@ -5,6 +5,7 @@ import Cafe from './components/Cafe'
 import CafeForm from './components/CafeForm'
 import Employee from './components/Employee'
 import EmployeeForm from './components/EmployeeForm'
+import SnackBar from './components/SnackBar';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/employees" element={<Employee />}/>
         <Route path="/employees/:employeeId" element={<EmployeeForm />}/>
       </Routes>
+      <SnackBar/>
     </div>
   );
 }
