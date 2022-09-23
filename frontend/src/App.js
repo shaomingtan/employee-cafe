@@ -1,23 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import { Route, Routes, Navigate } from 'react-router-dom'
+import ResponsiveAppBar from './components/Nav';
+import Cafe from './components/Cafe'
+import CafeForm from './components/CafeForm'
+import Employee from './components/Employee'
+import EmployeeForm from './components/EmployeeForm'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ResponsiveAppBar />
+      <Routes>
+        <Route exact path="/" element={ <Navigate to="/cafes" />}/>
+        <Route path="/cafes" element={<Cafe />}/>
+        <Route path="/cafes/:cafeId" element={<CafeForm />}/>
+        <Route path="/employees" element={<Employee />}/>
+        <Route path="/employees/:employeeId" element={<EmployeeForm />}/>
+      </Routes>
     </div>
   );
 }
