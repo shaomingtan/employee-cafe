@@ -7,10 +7,12 @@ const employee = {
     if (!req.query.cafe) {
       const [employees, metadata] = await db.sequelize.query(`
         SELECT 
+          employees.id, 
           employees.name, 
           employees.emailAddress, 
           employees.phoneNumber, 
           employees.gender, 
+          employees.cafeId, 
           IFNULL(cafes.name,'') as cafe,
           ROUND(
             JULIANDAY('now') - JULIANDAY(employees.startDateAtCafe)
@@ -35,10 +37,12 @@ const employee = {
     // If cafeId present, return employees who works at the cafe
     const [employeesFromCafe, metadata] = await db.sequelize.query(`
       SELECT 
+        employees.id, 
         employees.name, 
         employees.emailAddress, 
         employees.phoneNumber, 
         employees.gender, 
+        employees.cafeId, 
         IFNULL(cafes.name,'') as cafe,
         ROUND(
           JULIANDAY('now') - JULIANDAY(employees.startDateAtCafe)

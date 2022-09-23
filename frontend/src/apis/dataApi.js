@@ -36,3 +36,36 @@ export const deleteCafe = async (cafeId) => {
   }
 }
 
+export const getEmployees = async (location='') => {
+  try {
+    const result = await axios.get(`${BACKEND_ENDPOINT}/employees?location=${location}`);
+    return result.data
+  } catch (e) {
+    console.log("getEmployees error", e)
+  }
+}
+
+export const createEmployee = async (data) => {
+  try {
+    return await axios.post(`${BACKEND_ENDPOINT}/employee`, data);
+  } catch (e) {
+    console.log("createEmployee error", e)
+  }
+}
+
+export const updateEmployee = async (employeeId, data) => {
+  try {
+    return await axios.put(`${BACKEND_ENDPOINT}/employee/${employeeId}`, data);
+  } catch (e) {
+    console.log("updateEmployee error", e)
+  }
+}
+
+export const deleteEmployee = async (employeeId) => {
+  try {
+    return axios.delete(`${BACKEND_ENDPOINT}/employee/${employeeId}`);
+  } catch (e) {
+    console.log("deleteEmployee error", e)
+  }
+}
+

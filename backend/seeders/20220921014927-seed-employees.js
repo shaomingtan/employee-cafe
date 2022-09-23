@@ -7,8 +7,8 @@ const templateEmployee = (employeeIterator, cafeIterator, cafe) => {
   const startDateAtCafe = cafe ? helper.getDateXDaysAgo(Math.round(Math.random()*365)) : null
 
   return {
-    name: `Cafe${cafeIterator}: Sam Lim${employeeIterator}`,
-    emailAddress: `cafe${cafeIterator}_sam_lim${employeeIterator}@gic.com`,
+    name: `Sam Lim ${cafeIterator*employeeIterator}`,
+    emailAddress: `sam_lim_${cafeIterator*employeeIterator}@gic.com`,
     phoneNumber,
     gender: employeeIterator%2===1 ? 'female': 'male',
     cafeId: cafe ? cafe.dataValues.id : null,
@@ -18,7 +18,7 @@ const templateEmployee = (employeeIterator, cafeIterator, cafe) => {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const employeesToCreatePerCafe = 10000
+    const employeesToCreatePerCafe = 10
     const cafes = await db.Cafe.findAll()
 
     // Seed employees who do not belong to a cafe
