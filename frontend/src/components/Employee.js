@@ -1,5 +1,5 @@
-import {Link} from "react-router-dom"
-import React, { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom"
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -17,6 +17,16 @@ const Employee = () => {
   const [rowData, setRowData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  const [selectedCafe, setSelectedCafe] = useState(null);
+
+  // Retrieve cafeId from url params
+  const [searchParams, setSearchParams] = useSearchParams();
+  const cafeId = searchParams.get('cafeId')
+  // Update selected cafe
+  useEffect(() => {
+    setSelectedCafe(cafeId)
+    fetchEmployeesAndUpdateTable()
+  },[cafeId])
 
   // Setup table columns
   const defaultColDef = { resizable: true };
@@ -44,7 +54,7 @@ const Employee = () => {
 
   // Fetch and set table row data
   const fetchEmployeesAndUpdateTable = async () => {
-    const employeesResponse = await getEmployees();
+    const employeesResponse = await getEmployees(selectedCafe);
 
     if (employeesResponse && employeesResponse.length > 0){
       const parsedEmployees = employeesResponse.map((employee) => ({
@@ -83,7 +93,7 @@ const Employee = () => {
         deleteItemName={employeeToDelete ? employeeToDelete.name : ''}
       />
       <Box sx={{marginTop:"0.5rem", marginBottom:"0.5rem"}}>
-        <Typography variant="h5" gutterBottom>Employees</Typography>
+        <Typography variant="h5" gutterBottom>Employees {selectedCafe ? `working at ${selectedCafe}`: ''}</Typography>
         <Link
           style={{textDecoration: "none", color: "black"}} 
           to={`/employees/new`}

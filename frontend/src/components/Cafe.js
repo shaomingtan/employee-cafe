@@ -24,7 +24,18 @@ const Cafe = () => {
     {field: 'id', width: 350},
     {field: 'name'},
     {field: 'description'},
-    {field: 'employees'},
+    {
+      field: 'employees',
+      cellRenderer: (props) => {
+        return (
+          <Link
+            to={`/employees?cafeId=${props.data.id}`}
+          >
+            {props.data.employees}
+          </Link>
+        )
+      }
+    },
     {
       field: 'location', 
       filter:'agSetColumnFilter',

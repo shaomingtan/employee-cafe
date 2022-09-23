@@ -36,9 +36,9 @@ export const deleteCafe = async (cafeId) => {
   }
 }
 
-export const getEmployees = async (location='') => {
+export const getEmployees = async (cafeId='') => {
   try {
-    const result = await axios.get(`${BACKEND_ENDPOINT}/employees?location=${location}`);
+    const result = await axios.get(`${BACKEND_ENDPOINT}/employees?cafe=${cafeId}`);
     return result.data
   } catch (e) {
     console.log("getEmployees error", e)
