@@ -18,7 +18,7 @@ describe('Cafe controller', async () => {
     describe('when no location provided', async () => {
       it('Should send back all cafes sorted by highest number of employees first', async () => {
         // Get response
-        const response = await request(app).get('/cafes')
+        const response = await request(app).get('/api/cafes')
         expect(response.status).to.eql(200)
 
         // Configure expected response
@@ -49,7 +49,7 @@ describe('Cafe controller', async () => {
     describe('when location is set to north', async () => {
       it('Should send back cafes in the north sorted by highest number of employees first', async () => {
         // Get response
-        const response = await request(app).get('/cafes?location=north')
+        const response = await request(app).get('/api/cafes?location=north')
         expect(response.status).to.eql(200)
 
         // Configure expected response
@@ -72,7 +72,7 @@ describe('Cafe controller', async () => {
     describe('when invalid location provided', async () => {
       it('Should send back an empty list', async () => {
         // Get response
-        const response = await request(app).get('/cafes?location=invalid')
+        const response = await request(app).get('/api/cafes?location=invalid')
         expect(response.status).to.eql(200)
 
         // Configure expected response
@@ -90,7 +90,7 @@ describe('Cafe controller', async () => {
           "description": "Cafe 1 description",
           "location": "west"
         }
-        const response = await request(app).post('/cafe').send(payload)
+        const response = await request(app).post('/api/cafe').send(payload)
         expect(response.status).to.eql(200)
 
         // 1 cafe created
@@ -105,7 +105,7 @@ describe('Cafe controller', async () => {
           "description": "Cafe 1 description",
           "location": "west"
         }
-        const response = await request(app).post('/cafe').send(payload)
+        const response = await request(app).post('/api/cafe').send(payload)
         expect(response.status).to.eql(400)
         // Returns validation error
         expect(response.body).to.eql({ name: 'Cafe.name cannot be null' })
@@ -133,7 +133,7 @@ describe('Cafe controller', async () => {
 
         // Send request
         const newName = "Cafe 2"
-        const response = await request(app).put(`/cafe/${existingCafeId}`).send({name: newName})
+        const response = await request(app).put(`/api/cafe/${existingCafeId}`).send({name: newName})
         expect(response.status).to.eql(200)
 
         // Check that name was updated
@@ -146,7 +146,7 @@ describe('Cafe controller', async () => {
         // Send request
         const newName = "Cafe 2"
         const wrongCafeId = '123'
-        const response = await request(app).put(`/cafe/${wrongCafeId}`).send({name: newName})
+        const response = await request(app).put(`/api/cafe/${wrongCafeId}`).send({name: newName})
         expect(response.status).to.eql(400)
 
         // Check response
@@ -181,7 +181,7 @@ describe('Cafe controller', async () => {
         expect(employeesAssociatedWithCafe.length).to.eql(1)
 
         // Send request
-        const response = await request(app).delete(`/cafe/${existingCafeId}`)
+        const response = await request(app).delete(`/api/cafe/${existingCafeId}`)
         expect(response.status).to.eql(200)
 
         // Check that cafe was deleted
@@ -199,7 +199,7 @@ describe('Cafe controller', async () => {
       it('Should return an error', async () => {
         // Send request
         const wrongCafeId = '123'
-        const response = await request(app).delete(`/cafe/${wrongCafeId}`)
+        const response = await request(app).delete(`/api/cafe/${wrongCafeId}`)
    
         // Check response
         expect(response.status).to.eql(400)

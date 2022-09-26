@@ -9,6 +9,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon server.js",
+    "serve-local": "NODE_ENV=development nodemon server.js",
     "migrate": "sequelize db:migrate",
     "rollback": "sequelize db:migrate:undo",
     "rollback-all": "sequelize db:migrate:undo:all",
@@ -26,10 +27,11 @@
     "sqlite3": "^5.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20",
     "chai": "^4.3.6",
     "lodash": "^4.17.21",
     "mocha": "^10.0.0",
+    "nodemon": "^2.0.20",
+    "cors": "^2.8.5",
     "sequelize-cli": "^6.4.1",
     "supertest": "^6.2.4"
   }

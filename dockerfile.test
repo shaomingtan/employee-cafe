@@ -1,0 +1,10 @@
+# build backend test env and run test
+FROM node:16.14.2-alpine3.15 as backend-build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+ENV NODE_ENV=test
+COPY backend/package.json ./
+COPY backend/package-lock.json ./
+RUN npm ci --silent
+COPY backend/. ./
+RUN npm run test

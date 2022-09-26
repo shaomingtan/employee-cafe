@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // TODO pass this as an env variable to support different environments
-const BACKEND_ENDPOINT = "http://localhost:8000"
+const BACKEND_ENDPOINT = "/api"
 
 export const getCafes = async (location='') => {
   try {

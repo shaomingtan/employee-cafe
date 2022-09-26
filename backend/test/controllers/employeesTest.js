@@ -57,7 +57,7 @@ describe('Employee controller', async () => {
     describe('when cafeId not provided', async () => {
       it('Should return all employees in descending order of days worked', async () => {
         // Get response
-        const response = await request(app).get('/employees')
+        const response = await request(app).get('/api/employees')
         expect(response.status).to.eql(200)
 
         // Get cafes
@@ -101,7 +101,7 @@ describe('Employee controller', async () => {
         const employeeAtCafe1 = await db.Employee.findOne({where: {cafeId: cafe1.id}})
 
         // Get response
-        const response = await request(app).get(`/employees?cafe=${cafe1.id}`)
+        const response = await request(app).get(`/api/employees?cafe=${cafe1.id}`)
         expect(response.status).to.eql(200)
         
         // Configure expected response
@@ -118,7 +118,7 @@ describe('Employee controller', async () => {
     describe('when invalid cafeId provided', function() {
       it('Should send back an empty list', async () => {
         // Get response
-        const response = await request(app).get('/employees?cafe=invalid')
+        const response = await request(app).get('/api/employees?cafe=invalid')
         expect(response.status).to.eql(200)
 
         // Configure expected response
@@ -131,7 +131,7 @@ describe('Employee controller', async () => {
     describe('When required params are present and with no cafeID', async () => {
       it('Should create 1 new employee', async () => {
         // Send request
-        const response = await request(app).post('/employee').send(testHelper.templateEmployee)
+        const response = await request(app).post('/api/employee').send(testHelper.templateEmployee)
         expect(response.status).to.eql(200)
 
         // 1 employee created
@@ -142,7 +142,7 @@ describe('Employee controller', async () => {
     describe('When required params ie name is not present', async () => {
       it('Should not create a new employee', async () => {
         // Send request
-        const response = await request(app).post('/employee').send({
+        const response = await request(app).post('/api/employee').send({
           emailAddress: testHelper.templateEmployee.emailAddress,
           phoneNumber: testHelper.templateEmployee.phoneNumber,
           gender: testHelper.templateEmployee.gender,
@@ -167,7 +167,7 @@ describe('Employee controller', async () => {
         })
 
         // Send request
-        const response = await request(app).post('/employee').send({
+        const response = await request(app).post('/api/employee').send({
           ...testHelper.templateEmployee,
           cafeId: cafe.dataValues.id
         })
@@ -183,7 +183,7 @@ describe('Employee controller', async () => {
     describe('When required params are present and cafeID is not valid', async () => {
       it('Should not create a new employee', async () => {
         // Send request
-        const response = await request(app).post('/employee').send({
+        const response = await request(app).post('/api/employee').send({
           ...testHelper.templateEmployee,
           cafeId: 'invalid'
         })
@@ -211,7 +211,7 @@ describe('Employee controller', async () => {
 
         // Send request
         const newName = "Employee 2"
-        const response = await request(app).put(`/employee/${existingEmployeeId}`).send({name: newName})
+        const response = await request(app).put(`/api/employee/${existingEmployeeId}`).send({name: newName})
         expect(response.status).to.eql(200)
 
         // Check that name was updated
@@ -224,7 +224,7 @@ describe('Employee controller', async () => {
         // Send request
         const newName = "Employee 2"
         const wrongEmployeeId = 100000
-        const response = await request(app).put(`/employee/${wrongEmployeeId}`).send({name: newName})
+        const response = await request(app).put(`/api/employee/${wrongEmployeeId}`).send({name: newName})
         expect(response.status).to.eql(400)
 
         // Check response
@@ -241,7 +241,7 @@ describe('Employee controller', async () => {
         // Send request
         const newName = "Employee 2"
         const wrongEmployeeId = 100000
-        const response = await request(app).put(`/employee/${existingEmployeeId}`).send({
+        const response = await request(app).put(`/api/employee/${existingEmployeeId}`).send({
           name: newName,
           cafeId: "invalid"
         })
@@ -266,7 +266,7 @@ describe('Employee controller', async () => {
         })
 
         // Send request
-        const response = await request(app).put(`/employee/${existingEmployeeId}`).send({cafeId: newCafe.dataValues.id})
+        const response = await request(app).put(`/api/employee/${existingEmployeeId}`).send({cafeId: newCafe.dataValues.id})
         expect(response.status).to.eql(200)
 
         // Check that cafeId was updated
@@ -291,7 +291,7 @@ describe('Employee controller', async () => {
         expect(existingEmployees.length).to.eql(1)
 
         // Send request
-        const response = await request(app).delete(`/employee/${existingEmployeeId}`)
+        const response = await request(app).delete(`/api/employee/${existingEmployeeId}`)
         expect(response.status).to.eql(200)
 
         // Check employee count 1 0
@@ -303,7 +303,7 @@ describe('Employee controller', async () => {
       it('Should return an error', async () => {
         // Send request
         const wrongEmployeeId = 100000
-        const response = await request(app).delete(`/employee/${wrongEmployeeId}`)
+        const response = await request(app).delete(`/api/employee/${wrongEmployeeId}`)
         
         // Check response
         expect(response.status).to.eql(400)
