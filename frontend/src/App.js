@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes, Navigate } from 'react-router-dom'
-import ResponsiveAppBar from './components/Nav';
+import NavBar from './components/Nav';
 import Cafe from './components/Cafe'
 import CafeForm from './components/CafeForm'
 import Employee from './components/Employee'
@@ -10,7 +10,7 @@ import SnackBar from './components/SnackBar';
 function App() {
   return (
     <div className="App">
-      <ResponsiveAppBar />
+      <NavBar />
       <Routes>
         <Route exact path="/" element={ <Navigate to="/cafes" />}/>
         <Route path="/cafes" element={<Cafe />}/>

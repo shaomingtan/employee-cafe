@@ -7,9 +7,9 @@ import {Link} from "react-router-dom"
 
 const pages = ['cafes', 'employees'];
 
-const ResponsiveAppBar = () => {
+const NavBar = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ background: '#12224a' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {pages.map((page) => (
@@ -25,4 +25,4 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+export default NavBar;

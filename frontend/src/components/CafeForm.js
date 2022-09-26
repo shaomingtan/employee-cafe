@@ -7,6 +7,9 @@ import {
   Button
 } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 import { createCafe, updateCafe } from "../apis/dataApi"
 import store from "../ReduxStore";
@@ -24,14 +27,29 @@ const CafeForm = (props) => {
   const location = useLocation()
   const data = location.state
   
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required').min(6).max(10),
+    description: Yup.string().required('Description is required').max(256),
+  });
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(validationSchema)
+  });
+
   // Set cafe
   useEffect(() => {
     if (data) {
       setCafe(data)
+      reset(data)
     }
   },[data])
 
-  const saveCafe = async () => {
+  const saveCafe = async (data) => {
     if (cafe.id) {
       await updateCafe(cafe.id, {
         name: cafe.name,
@@ -64,6 +82,8 @@ const CafeForm = (props) => {
             fullWidth
             variant="standard"
             value={cafe.name}
+            {...register('name')}
+            error={errors.name ? true : false}
             onChange={(e) => {
               setCafe({
                 ...cafe,
@@ -71,6 +91,9 @@ const CafeForm = (props) => {
               });
             }}
           />
+          <Typography variant="inherit" color="textSecondary">
+            {errors.name?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -98,6 +121,8 @@ const CafeForm = (props) => {
             fullWidth
             variant="standard"
             value={cafe.description}
+            {...register('description')}
+            error={errors.description ? true : false}
             onChange={(e) => {
               setCafe({
                 ...cafe,
@@ -105,24 +130,29 @@ const CafeForm = (props) => {
               });
             }}
           />
+          <Typography variant="inherit" color="textSecondary">
+            {errors.description?.message}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={handleSubmit(saveCafe)}
+            style={{marginRight:'1rem'}}
+          >
+            Save
+          </Button>
+          <Link 
+            style={{textDecoration: "none"}} 
+            to={'/cafes'}
+          >  
+            <Button variant="outlined" color="primary">
+              Cancel
+            </Button>
+          </Link>
         </Grid>
       </Grid>
-
-      <Button 
-        variant="contained" 
-        color="primary"
-        onClick={saveCafe}
-      >
-        Save
-      </Button>
-      <Link 
-        style={{textDecoration: "none"}} 
-        to={'/cafes'}
-      >  
-        <Button variant="outlined" color="primary">
-          Cancel
-        </Button>
-      </Link>
     </Box>
   );
 };

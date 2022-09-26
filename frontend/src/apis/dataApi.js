@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // TODO pass this as an env variable to support different environments
-const BACKEND_ENDPOINT = "/api"
+const BACKEND_ENDPOINT = process.env.NODE_ENV === 'development' ? "http://localhost:8000/api" : '/api'
 
 export const getCafes = async (location='') => {
   try {
